@@ -1,4 +1,4 @@
-# Stature App - Android Application
+# UStoreClothingApp - Android Application
 
 Ứng dụng Android được xây dựng với Jetpack Compose, tái tạo thiết kế từ Figma với 4 màn hình chính:
 
