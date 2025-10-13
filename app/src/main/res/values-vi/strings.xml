@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Stature</string>
+    <!-- Authentication -->
+    <string name="lets_get_started">Bắt đầu ngay</string>
+    <string name="create_account">Tạo tài khoản</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="phone">Số điện thoại</string>
+    <string name="login">Đăng nhập</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="dont_have_account">Chưa có tài khoản?</string>
+    <string name="already_have_account">Đã có tài khoản?</string>
+    <string name="enter_password">Nhập mật khẩu</string>
+    <!-- Main Navigation -->
+    <string name="home">Trang chủ</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="cart">Giỏ hàng</string>
+    <string name="profile">Hồ sơ</string>
+    <!-- Shop -->
+    <string name="big_sale">Đại hạ giá lên đến 50%</string>
+    <string name="categories">Danh mục</string>
+    <string name="top_products">Sản phẩm nổi bật</string>
+    <string name="view_all">Xem tất cả</string>
+    <string name="search_placeholder">Tìm kiếm sản phẩm...</string>
+    <string name="search_results">Kết quả tìm kiếm</string>
+    <string name="socks_x">Tất X</string>
+    <!-- Product -->
+    <string name="product_detail">Chi tiết sản phẩm</string>
+    <string name="add_to_cart">Thêm vào giỏ</string>
+    <string name="buy_now">Mua ngay</string>
+    <string name="select_variations">Chọn biến thể</string>
+    <string name="color">Màu sắc</string>
+    <string name="size">Kích thước</string>
+    <string name="quantity">Số lượng</string>
+    <string name="pink">Hồng</string>
+    <string name="white">Trắng</string>
+    <string name="size_s">S</string>
+    <string name="size_m">M</string>
+    <string name="size_l">L</string>
+    <string name="size_xl">XL</string>
+    <!-- Cart -->
+    <string name="cart_title">Giỏ hàng</string>
+    <string name="shipping_address">Địa chỉ giao hàng</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="total">Tổng cộng</string>
+    <string name="checkout">Thanh toán</string>
+    <string name="remove">Xóa</string>
+    <string name="cart_empty">Giỏ hàng của bạn đang trống</string>
+    <string name="shopping_bag_icon">S</string>
+    <!-- Payment -->
+    <string name="payment">Thanh toán</string>
+    <string name="contact_information">Thông tin liên hệ</string>
+    <string name="items">Sản phẩm</string>
+    <string name="shipping_options">Tùy chọn giao hàng</string>
+    <string name="standard">Tiêu chuẩn</string>
+    <string name="express">Nhanh</string>
+    <string name="free">MIỄN PHÍ</string>
+    <string name="days">ngày</string>
+    <string name="delivered_on">Giao hàng vào hoặc trước Thứ Năm, 23 tháng 4 năm 2020</string>
+    <string name="payment_method">Phương thức thanh toán</string>
+    <string name="card">Thẻ</string>
+    <string name="cod">COD</string>
+    <string name="pay">Thanh toán</string>
+    <!-- Settings -->
+    <string name="settings">Cài đặt</string>
+    <string name="personal">Cá nhân</string>
+    <string name="shop">Cửa hàng</string>
+    <string name="profile_settings">Hồ sơ</string>
+    <string name="country">Quốc gia</string>
+    <string name="currency">Tiền tệ</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="sizes">Kích thước</string>
+    <string name="terms_and_conditions">Điều khoản và điều kiện</string>
+    <string name="save_changes">Lưu thay đổi</string>
+    <string name="edit_address">Chỉnh sửa địa chỉ</string>
+    <string name="required">Bắt buộc</string>
+    <string name="address">Địa chỉ</string>
+    <string name="town_city">Thành phố / Tỉnh</string>
+    <string name="postcode">Mã bưu điện</string>
+    <string name="phone_number">Số điện thoại</string>
+    <!-- Language Options -->
+    <string name="english">Tiếng Anh</string>
+    <string name="french">Tiếng Pháp</string>
+    <string name="russian">Tiếng Nga</string>
+    <string name="vietnamese">Tiếng Việt</string>
+    <!-- Currency Options -->
+    <string name="usd">USD</string>
+    <string name="euro">EURO</string>
+    <string name="vnd">VND</string>
+    <string name="rub">RUB</string>
+    <!-- Common -->
+    <string name="back">Quay lại</string>
+    <string name="close">Đóng</string>
+    <string name="done">Xong</string>
+    <string name="cancel">Hủy</string>
+    <string name="ok">OK</string>
+    <string name="loading">Đang tải...</string>
+    <string name="error">Lỗi</string>
+    <string name="success">Thành công</string>
+    <!-- Sample Data -->
+    <string name="sample_address">26, Đường Số 2, Phường Thảo Điền, An Phú, Quận 2, Thành phố Hồ Chí Minh</string>
+    <string name="sample_phone">+84932000000</string>
+    <string name="sample_email">amandamorgan@example.com</string>
+    <string name="sample_product_name">Lorem ipsum dolor sit amet consectetur.</string>
+    <string name="sample_price">$17,00</string>
+    <string name="sample_name">Romina</string>
+    <string name="sample_city">Banglore</string>
+    <string name="sample_postcode">188886</string>
+    <string name="sample_country">Việt Nam</string>
+    <string name="sample_size">UK</string>
+</resources>

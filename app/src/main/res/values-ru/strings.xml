@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Stature</string>
+    <!-- Authentication -->
+    <string name="lets_get_started">Начнем</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
+    <string name="phone">Телефон</string>
+    <string name="login">Войти</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="dont_have_account">Нет аккаунта?</string>
+    <string name="already_have_account">Уже есть аккаунт?</string>
+    <string name="enter_password">Введите пароль</string>
+    <!-- Main Navigation -->
+    <string name="home">Главная</string>
+    <string name="search">Поиск</string>
+    <string name="cart">Корзина</string>
+    <string name="profile">Профиль</string>
+    <!-- Shop -->
+    <string name="big_sale">Большая распродажа до 50%</string>
+    <string name="categories">Категории</string>
+    <string name="top_products">Популярные товары</string>
+    <string name="view_all">Посмотреть все</string>
+    <string name="search_placeholder">Поиск товаров...</string>
+    <string name="search_results">Результаты поиска</string>
+    <string name="socks_x">Носки X</string>
+    <!-- Product -->
+    <string name="product_detail">Детали товара</string>
+    <string name="add_to_cart">Добавить в корзину</string>
+    <string name="buy_now">Купить сейчас</string>
+    <string name="select_variations">Выберите варианты</string>
+    <string name="color">Цвет</string>
+    <string name="size">Размер</string>
+    <string name="quantity">Количество</string>
+    <string name="pink">Розовый</string>
+    <string name="white">Белый</string>
+    <string name="size_s">S</string>
+    <string name="size_m">M</string>
+    <string name="size_l">L</string>
+    <string name="size_xl">XL</string>
+    <!-- Cart -->
+    <string name="cart_title">Корзина</string>
+    <string name="shipping_address">Адрес доставки</string>
+    <string name="edit">Редактировать</string>
+    <string name="total">Итого</string>
+    <string name="checkout">Оформить заказ</string>
+    <string name="remove">Удалить</string>
+    <string name="cart_empty">Ваша корзина пуста</string>
+    <string name="shopping_bag_icon">С</string>
+    <!-- Payment -->
+    <string name="payment">Оплата</string>
+    <string name="contact_information">Контактная информация</string>
+    <string name="items">Товары</string>
+    <string name="shipping_options">Варианты доставки</string>
+    <string name="standard">Стандартная</string>
+    <string name="express">Экспресс</string>
+    <string name="free">БЕСПЛАТНО</string>
+    <string name="days">дней</string>
+    <string name="delivered_on">Доставлено в или до четверга, 23 апреля 2020</string>
+    <string name="payment_method">Способ оплаты</string>
+    <string name="card">Карта</string>
+    <string name="cod">Наложенный платеж</string>
+    <string name="pay">Оплатить</string>
+    <!-- Settings -->
+    <string name="settings">Настройки</string>
+    <string name="personal">Личное</string>
+    <string name="shop">Магазин</string>
+    <string name="profile_settings">Профиль</string>
+    <string name="country">Страна</string>
+    <string name="currency">Валюта</string>
+    <string name="language">Язык</string>
+    <string name="sizes">Размеры</string>
+    <string name="terms_and_conditions">Условия и положения</string>
+    <string name="save_changes">Сохранить изменения</string>
+    <string name="edit_address">Редактировать адрес</string>
+    <string name="required">Обязательно</string>
+    <string name="address">Адрес</string>
+    <string name="town_city">Город / Область</string>
+    <string name="postcode">Почтовый индекс</string>
+    <string name="phone_number">Номер телефона</string>
+    <!-- Language Options -->
+    <string name="english">Английский</string>
+    <string name="french">Французский</string>
+    <string name="russian">Русский</string>
+    <string name="vietnamese">Вьетнамский</string>
+    <!-- Currency Options -->
+    <string name="usd">USD</string>
+    <string name="euro">EURO</string>
+    <string name="vnd">VND</string>
+    <string name="rub">RUB</string>
+    <!-- Common -->
+    <string name="back">Назад</string>
+    <string name="close">Закрыть</string>
+    <string name="done">Готово</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">OK</string>
+    <string name="loading">Загрузка...</string>
+    <string name="error">Ошибка</string>
+    <string name="success">Успешно</string>
+    <!-- Sample Data -->
+    <string name="sample_address">26, Дуонг Со 2, Уорд Тао Дьен, Ан Фу, Район 2, Город Хошимин</string>
+    <string name="sample_phone">+84932000000</string>
+    <string name="sample_email">amandamorgan@example.com</string>
+    <string name="sample_product_name">Lorem ipsum dolor sit amet consectetur.</string>
+    <string name="sample_price">$17,00</string>
+    <string name="sample_name">Ромина</string>
+    <string name="sample_city">Бангалор</string>
+    <string name="sample_postcode">188886</string>
+    <string name="sample_country">Россия</string>
+    <string name="sample_size">RU</string>
+</resources>

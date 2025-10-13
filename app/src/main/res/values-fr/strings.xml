@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Stature</string>
+    <!-- Authentication -->
+    <string name="lets_get_started">Commençons</string>
+    <string name="create_account">Créer un compte</string>
+    <string name="email">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="phone">Téléphone</string>
+    <string name="login">Connexion</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="forgot_password">Mot de passe oublié?</string>
+    <string name="dont_have_account">Vous n\'avez pas de compte?</string>
+    <string name="already_have_account">Vous avez déjà un compte?</string>
+    <string name="enter_password">Entrez le mot de passe</string>
+    <!-- Main Navigation -->
+    <string name="home">Accueil</string>
+    <string name="search">Recherche</string>
+    <string name="cart">Panier</string>
+    <string name="profile">Profil</string>
+    <!-- Shop -->
+    <string name="big_sale">Grande vente jusqu\'à 50%</string>
+    <string name="categories">Catégories</string>
+    <string name="top_products">Produits populaires</string>
+    <string name="view_all">Voir tout</string>
+    <string name="search_placeholder">Rechercher des produits...</string>
+    <string name="search_results">Résultats de recherche</string>
+    <string name="socks_x">Chaussettes X</string>
+    <!-- Product -->
+    <string name="product_detail">Détails du produit</string>
+    <string name="add_to_cart">Ajouter au panier</string>
+    <string name="buy_now">Acheter maintenant</string>
+    <string name="select_variations">Sélectionner les variations</string>
+    <string name="color">Couleur</string>
+    <string name="size">Taille</string>
+    <string name="quantity">Quantité</string>
+    <string name="pink">Rose</string>
+    <string name="white">Blanc</string>
+    <string name="size_s">S</string>
+    <string name="size_m">M</string>
+    <string name="size_l">L</string>
+    <string name="size_xl">XL</string>
+    <!-- Cart -->
+    <string name="cart_title">Panier</string>
+    <string name="shipping_address">Adresse de livraison</string>
+    <string name="edit">Modifier</string>
+    <string name="total">Total</string>
+    <string name="checkout">Commander</string>
+    <string name="remove">Supprimer</string>
+    <string name="cart_empty">Votre panier est vide</string>
+    <string name="shopping_bag_icon">S</string>
+    <!-- Payment -->
+    <string name="payment">Paiement</string>
+    <string name="contact_information">Informations de contact</string>
+    <string name="items">Articles</string>
+    <string name="shipping_options">Options de livraison</string>
+    <string name="standard">Standard</string>
+    <string name="express">Express</string>
+    <string name="free">GRATUIT</string>
+    <string name="days">jours</string>
+    <string name="delivered_on">Livré le ou avant le jeudi 23 avril 2020</string>
+    <string name="payment_method">Mode de paiement</string>
+    <string name="card">Carte</string>
+    <string name="cod">COD</string>
+    <string name="pay">Payer</string>
+    <!-- Settings -->
+    <string name="settings">Paramètres</string>
+    <string name="personal">Personnel</string>
+    <string name="shop">Boutique</string>
+    <string name="profile_settings">Profil</string>
+    <string name="country">Pays</string>
+    <string name="currency">Devise</string>
+    <string name="language">Langue</string>
+    <string name="sizes">Tailles</string>
+    <string name="terms_and_conditions">Termes et conditions</string>
+    <string name="save_changes">Sauvegarder les modifications</string>
+    <string name="edit_address">Modifier l\'adresse</string>
+    <string name="required">Requis</string>
+    <string name="address">Adresse</string>
+    <string name="town_city">Ville / Commune</string>
+    <string name="postcode">Code postal</string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <!-- Language Options -->
+    <string name="english">Anglais</string>
+    <string name="french">Français</string>
+    <string name="russian">Russe</string>
+    <string name="vietnamese">Vietnamien</string>
+    <!-- Currency Options -->
+    <string name="usd">USD</string>
+    <string name="euro">EURO</string>
+    <string name="vnd">VND</string>
+    <string name="rub">RUB</string>
+    <!-- Common -->
+    <string name="back">Retour</string>
+    <string name="close">Fermer</string>
+    <string name="done">Terminé</string>
+    <string name="cancel">Annuler</string>
+    <string name="ok">OK</string>
+    <string name="loading">Chargement...</string>
+    <string name="error">Erreur</string>
+    <string name="success">Succès</string>
+    <!-- Sample Data -->
+    <string name="sample_address">26, Rue Duong So 2, Quartier Thao Dien, An Phu, District 2, Ho Chi Minh ville</string>
+    <string name="sample_phone">+84932000000</string>
+    <string name="sample_email">amandamorgan@example.com</string>
+    <string name="sample_product_name">Lorem ipsum dolor sit amet consectetur.</string>
+    <string name="sample_price">$17,00</string>
+    <string name="sample_name">Romina</string>
+    <string name="sample_city">Banglore</string>
+    <string name="sample_postcode">188886</string>
+    <string name="sample_country">France</string>
+    <string name="sample_size">FR</string>
+</resources>
