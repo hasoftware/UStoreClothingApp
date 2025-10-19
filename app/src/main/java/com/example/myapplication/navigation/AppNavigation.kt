@@ -280,18 +280,18 @@ fun AppNavigation(
             val productId = backStackEntry.arguments?.getString("productId") ?: "1"
             ProductDetailScreen(
                 productId = productId,
+                onNavigate = { route ->
+                    when (route) {
+                        "shop" -> navController.navigate(Screen.Shop.route)
+                        "search" -> navController.navigate(Screen.Search.route)
+                        "cart" -> navController.navigate(Screen.Cart.route)
+                        "profile" -> navController.navigate(Screen.Profile.route)
+                    }
+                },
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onVariationsClick = {
-                    navController.navigate(Screen.ProductVariations.createRoute(productId))
-                },
-                onAddToCart = {
-                    // Handle add to cart
-                },
-                onBuyNow = {
-                    // Handle buy now
-                }
+                currentRoute = "product_detail"
             )
         }
         
