@@ -5,7 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -32,7 +32,7 @@ fun StatureBottomNavigation(
 ) {
     val bottomNavItems = listOf(
         BottomNavItem(Icons.Default.Home, getStringResource(R.string.home), "shop"),
-        BottomNavItem(Icons.Default.Search, getStringResource(R.string.search), "search"),
+        BottomNavItem(Icons.Default.Favorite, getStringResource(R.string.wishlist), "wishlist"),
         BottomNavItem(Icons.Default.ShoppingCart, getStringResource(R.string.cart), "cart"),
         BottomNavItem(Icons.Default.Person, getStringResource(R.string.profile), "profile")
     )

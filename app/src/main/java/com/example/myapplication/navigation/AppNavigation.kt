@@ -25,6 +25,7 @@ sealed class Screen(val route: String) {
     // Main app screens
     object Shop : Screen("shop")
     object Search : Screen("search")
+    object Wishlist : Screen("wishlist")
     object Cart : Screen("cart")
     object Profile : Screen("profile")
     object Categories : Screen("categories")
@@ -200,6 +201,7 @@ fun AppNavigation(
                 onNavigate = { route ->
                     when (route) {
                         "search" -> navController.navigate(Screen.Search.route)
+                        "wishlist" -> navController.navigate(Screen.Wishlist.route)
                         "cart" -> navController.navigate(Screen.Cart.route)
                         "profile" -> navController.navigate(Screen.Profile.route)
                         "categories" -> navController.navigate(Screen.Categories.route)
@@ -249,6 +251,23 @@ fun AppNavigation(
                     navController.navigate(Screen.EmptyCart.route)
                 },
                 currentRoute = "cart"
+            )
+        }
+        
+        composable(Screen.Wishlist.route) {
+            WishlistScreen(
+                onNavigate = { route ->
+                    when (route) {
+                        "shop" -> navController.navigate(Screen.Shop.route)
+                        "search" -> navController.navigate(Screen.Search.route)
+                        "cart" -> navController.navigate(Screen.Cart.route)
+                        "profile" -> navController.navigate(Screen.Profile.route)
+                    }
+                },
+                onProductClick = { productId ->
+                    navController.navigate(Screen.ProductDetail.createRoute(productId))
+                },
+                currentRoute = "wishlist"
             )
         }
         
