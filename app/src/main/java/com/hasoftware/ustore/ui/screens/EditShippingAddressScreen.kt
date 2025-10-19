@@ -1,0 +1,213 @@
+package com.hasoftware.ustore.ui.screens
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.hasoftware.ustore.R
+import com.hasoftware.ustore.utils.getStringResource
+
+@Composable
+fun EditShippingAddressScreen(
+    onNavigate: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveChanges: () -> Unit,
+    currentRoute: String = "profile"
+) {
+    var address by remember { mutableStateOf("Romina") }
+    var townCity by remember { mutableStateOf("Banglore") }
+    var postcode by remember { mutableStateOf("188886") }
+    var phoneNumber by remember { mutableStateOf("") }
+    
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Header with back button
+            EditShippingAddressHeader(onBackClick = onBackClick)
+            
+            // Content
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 20.dp)
+            ) {
+                // Form fields
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // Address field
+                    AddressField(
+                        label = getStringResource(R.string.address),
+                        value = address,
+                        onValueChange = { address = it },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    
+                    // Town / City field
+                    AddressField(
+                        label = getStringResource(R.string.town_city),
+                        value = townCity,
+                        onValueChange = { townCity = it },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    
+                    // Postcode field
+                    AddressField(
+                        label = getStringResource(R.string.postcode),
+                        value = postcode,
+                        onValueChange = { postcode = it },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    
+                    // Phone Number field
+                    AddressField(
+                        label = getStringResource(R.string.phone_number),
+                        value = phoneNumber,
+                        onValueChange = { phoneNumber = it },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                
+                Spacer(modifier = Modifier.weight(1f))
+                
+                // Save Changes button
+                Button(
+                    onClick = onSaveChanges,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF007AFF)
+                    ),
+                    shape = RoundedCornerShape(28.dp)
+                ) {
+                    Text(
+                        text = getStringResource(R.string.save_changes),
+                        color = Color.White,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 16.sp
+                    )
+                }
+                
+                // Bottom spacing
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun EditShippingAddressHeader(onBackClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+    ) {
+        // Status bar spacing
+        Spacer(modifier = Modifier.height(20.dp))
+        
+        // Back button
+        IconButton(
+            onClick = onBackClick,
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(Color.Black.copy(alpha = 0.1f))
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = getStringResource(R.string.back),
+                tint = Color.Black
+            )
+        }
+        
+        // Title
+        Text(
+            text = getStringResource(R.string.settings),
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        
+        // Subtitle
+        Text(
+            text = getStringResource(R.string.shipping_address),
+            fontSize = 16.sp,
+            color = Color(0xFF8E8E93),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(top = 40.dp)
+        )
+    }
+}
+
+@Composable
+fun AddressField(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        // Label
+        Text(
+            text = label,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        
+        // Input field
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text(getStringResource(R.string.required)) },
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF007AFF),
+                unfocusedBorderColor = Color(0xFFE5E5EA),
+                focusedContainerColor = Color(0xFFF5F5F5),
+                unfocusedContainerColor = Color(0xFFF5F5F5),
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black
+            ),
+            singleLine = true
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EditShippingAddressScreenPreview() {
+    MaterialTheme {
+        EditShippingAddressScreen(
+            onNavigate = {},
+            onBackClick = {},
+            onSaveChanges = {}
+        )
+    }
+}
+

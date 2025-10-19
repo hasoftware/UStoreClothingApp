@@ -1,143 +1,206 @@
-# UStoreClothingApp - Android Application
+# UStore Backend API
 
-Ứng dụng Android được xây dựng với Jetpack Compose, tái tạo thiết kế từ Figma với 4 màn hình chính:
+Backend API cho ứng dụng e-commerce UStore được xây dựng bằng Spring Boot.
 
-## 🎨 Thiết kế
+## 🚀 Tính năng
 
-Ứng dụng bao gồm 4 màn hình theo thiết kế Figma:
+- **Authentication & Authorization**: JWT-based authentication
+- **User Management**: Đăng ký, đăng nhập, quản lý user
+- **Product Management**: CRUD operations cho sản phẩm
+- **Category Management**: Quản lý danh mục sản phẩma
+- **Product Reviews**: Hệ thống đánh giá sản phẩm
+- **Search & Filter**: Tìm kiếm và lọc sản phẩm
+- **File Upload**: Upload hình ảnh sản phẩm
+- **Database Migration**: Flyway migration scripts
 
-1. **Start Screen** - Màn hình giới thiệu với logo "Stature" và nút "Let's get started"
-2. **Create Account Screen** - Form đăng ký với các trường Email, Password, và Phone Number
-3. **Login Screen** - Màn hình đăng nhập với trường Email
-4. **Password Screen** - Màn hình nhập mật khẩu với avatar người dùng
+## 🛠️ Công nghệ sử dụng
 
-## 🚀 Cách Build và Chạy
+- **Java 17**
+- **Spring Boot 3.2.0**
+- **Spring Security**
+- **Spring Data JPA**
+- **MySQL 8.0**
+- **JWT (JSON Web Token)**
+- **Flyway Migration**
+- **Maven**
 
-### Yêu cầu hệ thống:
+## 📋 Yêu cầu hệ thống
 
-- Android Studio Arctic Fox hoặc mới hơn
-- JDK 11 hoặc mới hơn
-- Android SDK API 30+
+- Java 17+
+- Maven 3.6+
+- MySQL 8.0+
+- IDE (IntelliJ IDEA, Eclipse, VS Code)
 
-### Các bước build:
+## 🚀 Cài đặt và chạy
 
-1. **Mở project trong Android Studio:**
-
-   ```
-   File -> Open -> Chọn thư mục myapp
-   ```
-
-2. **Sync Gradle:**
-
-   - Android Studio sẽ tự động sync
-   - Nếu có lỗi, click "Sync Now"
-
-3. **Build APK:**
-
-   ```
-   Build -> Build Bundle(s) / APK(s) -> Build APK(s)
-   ```
-
-4. **Chạy trên emulator/device:**
-   - Chọn device/emulator
-   - Click nút Run (▶️) hoặc Shift+F10
-
-### Build từ command line (nếu có Java setup đúng):
+### 1. Clone repository
 
 ```bash
-# Windows
-.\gradlew.bat assembleDebug
-
-# Linux/Mac
-./gradlew assembleDebug
+git clone <repository-url>
+cd backend
 ```
 
-## 📱 Tính năng đã implement
+### 2. Cấu hình database
 
-✅ **Theme và Colors:**
+- Tạo database MySQL: `ustore_db`
+- Cập nhật thông tin database trong `src/main/resources/application.yml`:
 
-- Màu sắc theo thiết kế Figma (Blue Primary, Light, Dark)
-- Typography với các kích thước phù hợp
-- Material 3 design system
-
-✅ **Navigation:**
-
-- Jetpack Navigation Compose với bottom navigation
-- Auth flow: Start → Create Account/Login → Password → Shop
-- Main app flow: Shop ↔ Search ↔ Cart ↔ Profile
-- Product detail navigation với back button
-
-✅ **UI Components:**
-
-- Custom buttons với rounded corners
-- Text fields với validation states
-- Background decorative shapes
-- Responsive layout
-- Search bar với placeholder
-- Bottom navigation bar
-- Product cards và image carousels
-
-✅ **Authentication Screens:**
-
-- StartScreen với logo và branding
-- CreateAccountScreen với form validation
-- LoginScreen với email input
-- PasswordScreen với avatar và keyboard
-
-✅ **E-commerce Screens:**
-
-- ShopScreen (Home) với banner "Big Sale", categories grid, top products
-- SearchResultsScreen với product grid layout
-- ProductDetailScreen với image carousel và product info
-- ProductVariationsScreen với color/size selection và quantity picker
-
-## 🛠️ Cấu trúc code
-
-```
-app/src/main/java/com/example/myapplication/
-├── MainActivity.kt                    # Main activity với navigation
-├── navigation/
-│   └── AppNavigation.kt              # Navigation setup
-├── ui/
-│   ├── theme/                        # Colors, Typography, Theme
-│   │   ├── Color.kt
-│   │   ├── Type.kt
-│   │   └── Theme.kt
-│   └── screens/                      # Tất cả màn hình
-│       ├── StartScreen.kt
-│       ├── CreateAccountScreen.kt
-│       ├── LoginScreen.kt
-│       └── PasswordScreen.kt
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ustore_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: your_username
+    password: your_password
 ```
 
-## 🎯 Các bước tiếp theo
+### 3. Chạy ứng dụng
 
-Để hoàn thiện ứng dụng, bạn có thể:
+```bash
+# Build project
+mvn clean install
 
-1. **Thêm validation logic** cho form inputs
-2. **Tích hợp API** cho authentication
-3. **Thêm state management** với ViewModel
-4. **Custom icons** thay cho placeholder
-5. **Animations** cho transitions
-6. **Unit tests** và UI tests
+# Chạy ứng dụng
+mvn spring-boot:run
+```
 
-## 🔧 Troubleshooting
+Ứng dụng sẽ chạy tại: `http://localhost:8080`
 
-Nếu gặp lỗi build:
+## 📚 API Documentation
 
-1. Kiểm tra Java version (cần JDK 11+)
-2. Sync Gradle trong Android Studio
-3. Clean và Rebuild project
-4. Kiểm tra Android SDK version
+### Swagger UI
 
-## 📞 Hỗ trợ
+Truy cập: `http://localhost:8080/swagger-ui.html`
 
-Nếu có vấn đề gì, hãy kiểm tra:
+### API Endpoints
 
-- Android Studio logs
-- Gradle build logs
-- Device/Emulator compatibility
+#### Authentication
 
----
+- `POST /api/auth/signin` - Đăng nhập
+- `POST /api/auth/signup` - Đăng ký
 
-**Chúc bạn build thành công! 🎉**
+#### Products
+
+- `GET /api/products` - Lấy danh sách sản phẩm
+- `GET /api/products/{id}` - Lấy sản phẩm theo ID
+- `GET /api/products/search?keyword=...` - Tìm kiếm sản phẩm
+- `GET /api/products/category/{categoryId}` - Sản phẩm theo danh mục
+- `GET /api/products/featured` - Sản phẩm nổi bật
+- `GET /api/products/new` - Sản phẩm mới
+- `POST /api/products` - Tạo sản phẩm mới (Admin)
+- `PUT /api/products/{id}` - Cập nhật sản phẩm (Admin)
+- `DELETE /api/products/{id}` - Xóa sản phẩm (Admin)
+
+#### Categories
+
+- `GET /api/categories` - Lấy danh sách danh mục
+- `GET /api/categories/{id}` - Lấy danh mục theo ID
+- `GET /api/categories/active` - Danh mục đang hoạt động
+- `POST /api/categories` - Tạo danh mục mới (Admin)
+- `PUT /api/categories/{id}` - Cập nhật danh mục (Admin)
+- `DELETE /api/categories/{id}` - Xóa danh mục (Admin)
+
+## 🔐 Authentication
+
+### Đăng ký
+
+```json
+POST /api/auth/signup
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123",
+  "fullName": "Test User",
+  "phone": "0123456789"
+}
+```
+
+### Đăng nhập
+
+```json
+POST /api/auth/signin
+{
+  "username": "testuser",
+  "password": "password123"
+}
+```
+
+### Sử dụng JWT Token
+
+Thêm header vào các request cần authentication:
+
+```
+Authorization: Bearer <your-jwt-token>
+```
+
+## 🗄️ Database Schema
+
+### Tables
+
+- `users` - Thông tin người dùng
+- `roles` - Vai trò người dùng
+- `user_roles` - Liên kết user-role
+- `categories` - Danh mục sản phẩm
+- `products` - Sản phẩm
+- `product_images` - Hình ảnh sản phẩm
+- `product_reviews` - Đánh giá sản phẩm
+
+## 🔧 Cấu hình
+
+### JWT Configuration
+
+```yaml
+jwt:
+  secret: your-secret-key
+  expiration: 86400000 # 24 hours
+```
+
+### CORS Configuration
+
+```yaml
+cors:
+  allowed-origins:
+    - http://localhost:3000
+    - http://localhost:8080
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+```
+
+## 📝 Migration
+
+Database migration được quản lý bởi Flyway:
+
+- Scripts migration: `src/main/resources/db/migration/`
+- Tự động chạy khi khởi động ứng dụng
+- Versioning: V1**, V2**, V3\_\_...
+
+## 🧪 Testing
+
+```bash
+# Chạy tests
+mvn test
+
+# Chạy tests với coverage
+mvn test jacoco:report
+```
+
+## 📦 Build & Deploy
+
+```bash
+# Build JAR file
+mvn clean package
+
+# Chạy JAR file
+java -jar target/ustore-backend-1.0.0.jar
+```
+
+## 🤝 Contributing
+
+1. Fork repository
+2. Tạo feature branch
+3. Commit changes
+4. Push to branch
+5. Tạo Pull Request
