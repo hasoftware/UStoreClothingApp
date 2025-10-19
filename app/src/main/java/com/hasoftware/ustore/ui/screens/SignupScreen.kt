@@ -38,8 +38,9 @@ fun SignupScreen(
     
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(uiState.isLoggedIn) {
-        if (uiState.isLoggedIn) {
+    // Navigate to home when user is logged in
+    if (uiState.isLoggedIn && uiState.currentUser != null && !uiState.isLoading) {
+        LaunchedEffect(Unit) {
             navController.navigate("home") {
                 popUpTo("signup") { inclusive = true }
             }

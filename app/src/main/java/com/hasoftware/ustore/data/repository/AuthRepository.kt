@@ -1,5 +1,6 @@
 package com.hasoftware.ustore.data.repository
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,28 +18,41 @@ class AuthRepository @Inject constructor(
 
     suspend fun signUp(email: String, password: String, fullName: String): Result<FirebaseUser> {
         return try {
+            Log.d("AuthRepository", "Bắt đầu đăng ký với email: $email")
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             val user = result.user
             
             if (user != null) {
-                // Lưu thông tin user vào Firestore
-                val userData = hashMapOf(
-                    "uid" to user.uid,
-                    "email" to email,
-                    "fullName" to fullName,
-                    "createdAt" to System.currentTimeMillis()
-                )
+                Log.d("AuthRepository", "Tạo tài khoản Firebase thành công: ${user.uid}")
                 
-                firestore.collection("users")
-                    .document(user.uid)
-                    .set(userData)
-                    .await()
+                // Lưu thông tin user vào Firestore (không bắt buộc)
+                try {
+                    val userData = hashMapOf(
+                        "uid" to user.uid,
+                        "email" to email,
+                        "fullName" to fullName,
+                        "createdAt" to System.currentTimeMillis()
+                    )
+                    
+                    firestore.collection("users")
+                        .document(user.uid)
+                        .set(userData)
+                        .await()
+                    
+                    Log.d("AuthRepository", "Lưu dữ liệu Firestore thành công")
+                } catch (firestoreError: Exception) {
+                    // Log lỗi nhưng không làm fail toàn bộ quá trình đăng ký
+                    Log.w("AuthRepository", "Lỗi khi lưu dữ liệu Firestore: ${firestoreError.message}")
+                }
                 
+                Log.d("AuthRepository", "Đăng ký hoàn tất thành công")
                 Result.success(user)
             } else {
+                Log.e("AuthRepository", "Không thể tạo tài khoản - user null")
                 Result.failure(Exception("Không thể tạo tài khoản"))
             }
         } catch (e: Exception) {
+            Log.e("AuthRepository", "Lỗi đăng ký: ${e.message}")
             Result.failure(e)
         }
     }

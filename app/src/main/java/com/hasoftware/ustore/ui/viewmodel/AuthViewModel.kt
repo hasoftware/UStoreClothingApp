@@ -1,5 +1,6 @@
 package com.hasoftware.ustore.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasoftware.ustore.data.repository.AuthRepository
@@ -39,10 +40,12 @@ class AuthViewModel @Inject constructor(
 
     fun signUp(email: String, password: String, fullName: String) {
         viewModelScope.launch {
+            Log.d("AuthViewModel", "Bắt đầu đăng ký với email: $email")
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
             
             authRepository.signUp(email, password, fullName)
                 .onSuccess { user ->
+                    Log.d("AuthViewModel", "Đăng ký thành công: ${user.uid}")
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         isLoggedIn = true,
@@ -51,6 +54,7 @@ class AuthViewModel @Inject constructor(
                     )
                 }
                 .onFailure { exception ->
+                    Log.e("AuthViewModel", "Lỗi đăng ký: ${exception.message}")
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         errorMessage = exception.message ?: "Đăng ký thất bại"
