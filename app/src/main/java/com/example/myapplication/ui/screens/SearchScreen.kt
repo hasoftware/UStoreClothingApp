@@ -38,14 +38,46 @@ data class SearchProduct(
     val imageUrl: String = ""
 )
 
+data class SearchHistoryItem(
+    val id: String,
+    val query: String,
+    val timestamp: Long = System.currentTimeMillis()
+)
+
+data class DiscoverProduct(
+    val id: String,
+    val name: String,
+    val description: String,
+    val price: String,
+    val imageUrl: String = ""
+)
+
 @Composable
 fun SearchScreen(
     onNavigate: (String) -> Unit,
     onProductClick: (String) -> Unit = {},
     currentRoute: String = "search"
 ) {
-    var searchQuery by remember { mutableStateOf("Socks") }
+    var searchQuery by remember { mutableStateOf("") }
     var isSearchFocused by remember { mutableStateOf(false) }
+    
+    val searchHistory = remember {
+        listOf(
+            SearchHistoryItem("1", "Red Dress"),
+            SearchHistoryItem("2", "Sunglasses"),
+            SearchHistoryItem("3", "Socks"),
+            SearchHistoryItem("4", "Mustard Pants"),
+            SearchHistoryItem("5", "80-s Skirt")
+        )
+    }
+    
+    val discoverProducts = remember {
+        listOf(
+            DiscoverProduct("1", "Premium Jacket", "Lorem ipsum dolor sit amet consectetur.", "$125,00"),
+            DiscoverProduct("2", "Casual Shirt", "Lorem ipsum dolor sit amet consectetur.", "$32,00"),
+            DiscoverProduct("3", "Summer Dress", "Lorem ipsum dolor sit amet consectetur.", "$21,00")
+        )
+    }
     
     val searchProducts = remember {
         listOf(
@@ -65,35 +97,57 @@ fun SearchScreen(
             .fillMaxSize()
             .background(White)
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
             // Header section
-            item(span = { GridItemSpan(2) }) {
-                SearchHeader(
-                    searchQuery = searchQuery,
-                    onSearchChange = { searchQuery = it },
-                    onSearchFocusChange = { isSearchFocused = it },
-                    onFilterClick = { /* Handle filter */ }
-                )
-            }
+            SearchHeader(
+                searchQuery = searchQuery,
+                onSearchChange = { searchQuery = it },
+                onSearchFocusChange = { isSearchFocused = it },
+                onFilterClick = { /* Handle filter */ },
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
+            )
             
-            // Products grid
-            items(searchProducts) { product ->
-                SearchProductCard(
-                    product = product,
-                    onClick = { onProductClick(product.id) },
-                    modifier = Modifier.fadeIn(delay = (searchProducts.indexOf(product) * 100))
+            if (searchQuery.isEmpty()) {
+                // Search History Section
+                SearchHistorySection(
+                    searchHistory = searchHistory,
+                    onHistoryItemClick = { query -> searchQuery = query },
+                    modifier = Modifier.padding(horizontal = 20.dp)
                 )
-            }
-            
-            // Bottom spacing for navigation
-            item(span = { GridItemSpan(2) }) {
-                Spacer(modifier = Modifier.height(100.dp))
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                // Discover Section
+                DiscoverSection(
+                    discoverProducts = discoverProducts,
+                    onProductClick = onProductClick,
+                    modifier = Modifier.padding(horizontal = 20.dp)
+                )
+            } else {
+                // Search Results
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(searchProducts.filter { it.name.contains(searchQuery, ignoreCase = true) }) { product ->
+                        SearchProductCard(
+                            product = product,
+                            onClick = { onProductClick(product.id) },
+                            modifier = Modifier.fadeIn(delay = (searchProducts.indexOf(product) * 100))
+                        )
+                    }
+                    
+                    // Bottom spacing for navigation
+                    item(span = { GridItemSpan(2) }) {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                }
             }
         }
         
@@ -111,10 +165,11 @@ private fun SearchHeader(
     searchQuery: String,
     onSearchChange: (String) -> Unit,
     onSearchFocusChange: (Boolean) -> Unit,
-    onFilterClick: () -> Unit
+    onFilterClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         // Title
         Text(
@@ -202,6 +257,171 @@ private fun SearchHeader(
     }
 }
 
+
+@Composable
+private fun SearchHistorySection(
+    searchHistory: List<SearchHistoryItem>,
+    onHistoryItemClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = "Search history",
+            color = Color(0xFF202020),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+            letterSpacing = (-0.18).sp
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // Search history chips
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(searchHistory) { item ->
+                SearchHistoryChip(
+                    query = item.query,
+                    onClick = { onHistoryItemClick(item.query) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SearchHistoryChip(
+    query: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(9.dp))
+            .background(Color(0xFFF4F4F4))
+            .clickable { onClick() }
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+    ) {
+        Text(
+            text = query,
+            color = Color.Black,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.Medium,
+            letterSpacing = (-0.17).sp
+        )
+    }
+}
+
+@Composable
+private fun DiscoverSection(
+    discoverProducts: List<DiscoverProduct>,
+    onProductClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = "Discover",
+            color = Color(0xFF202020),
+            fontSize = 21.sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = (-0.21).sp
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // Discover products
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(discoverProducts) { product ->
+                DiscoverProductCard(
+                    product = product,
+                    onClick = { onProductClick(product.id) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun DiscoverProductCard(
+    product: DiscoverProduct,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .width(140.dp)
+            .height(204.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(9.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Product image
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(140.dp)
+                    .background(Color(0xFFF5F5F5)),
+                contentAlignment = Alignment.Center
+            ) {
+                // Placeholder for product image
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(BluePrimary),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "IMG",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp
+                    )
+                }
+            }
+            
+            // Product info
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+            ) {
+                Text(
+                    text = product.description,
+                    color = Color.Black,
+                    fontSize = 12.sp,
+                    lineHeight = 16.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Text(
+                    text = product.price,
+                    color = Color(0xFF202020),
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.17).sp
+                )
+            }
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
