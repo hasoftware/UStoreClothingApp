@@ -7,17 +7,27 @@ import androidx.navigation.compose.composable
 import com.example.myapplication.ui.screens.*
 
 sealed class Screen(val route: String) {
+    // Splash screen
+    object Splash : Screen("splash")
+    
     // Auth screens
     object Start : Screen("start")
     object CreateAccount : Screen("create_account")
     object Login : Screen("login")
     object Password : Screen("password")
+    object ConfirmPassword : Screen("confirm_password/{password}") {
+        fun createRoute(password: String) = "confirm_password/$password"
+    }
+    object ForgotPassword : Screen("forgot_password")
+    object OTPVerification : Screen("otp_verification")
+    object MaximumAttempts : Screen("maximum_attempts")
     
     // Main app screens
     object Shop : Screen("shop")
     object Search : Screen("search")
     object Cart : Screen("cart")
     object Profile : Screen("profile")
+    object Categories : Screen("categories")
     
     // Settings screens
     object Settings : Screen("settings")
@@ -41,11 +51,25 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun AppNavigation(
+    navController: NavHostController,
+    onLanguageChange: () -> Unit = {}
+) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Start.route
+        startDestination = Screen.Splash.route
     ) {
+        // Splash screen
+        composable(Screen.Splash.route) {
+            SplashScreen(
+                onSplashFinished = {
+                    navController.navigate(Screen.Start.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
         // Auth screens
         composable(Screen.Start.route) {
             StartScreen(
@@ -60,11 +84,9 @@ fun AppNavigation(navController: NavHostController) {
         
         composable(Screen.CreateAccount.route) {
             CreateAccountScreen(
-                onDoneClick = {
-                    // Navigate to main app after successful registration
-                    navController.navigate(Screen.Shop.route) {
-                        popUpTo(Screen.Start.route) { inclusive = true }
-                    }
+                onDoneClick = { password ->
+                    // Navigate to confirm password screen
+                    navController.navigate(Screen.ConfirmPassword.createRoute(password))
                 },
                 onCancelClick = {
                     navController.popBackStack()
@@ -79,6 +101,9 @@ fun AppNavigation(navController: NavHostController) {
                 },
                 onCancelClick = {
                     navController.popBackStack()
+                },
+                onForgotPasswordClick = {
+                    navController.navigate(Screen.ForgotPassword.route)
                 }
             )
         }
@@ -97,6 +122,78 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         
+        composable(Screen.ConfirmPassword.route) { backStackEntry ->
+            val password = backStackEntry.arguments?.getString("password") ?: ""
+            ReEnterPasswordScreen(
+                onPasswordConfirmed = { confirmedPassword ->
+                    // Navigate to main app after successful password confirmation
+                    navController.navigate(Screen.Shop.route) {
+                        popUpTo(Screen.Start.route) { inclusive = true }
+                    }
+                },
+                onCancelClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(Screen.ForgotPassword.route) {
+            ForgotPasswordScreen(
+                onSendResetLink = { email ->
+                    // Navigate to OTP verification screen
+                    navController.navigate(Screen.OTPVerification.route)
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onMaxAttemptsReached = {
+                    // Navigate to maximum attempts screen
+                    navController.navigate(Screen.MaximumAttempts.route)
+                }
+            )
+        }
+        
+        composable(Screen.OTPVerification.route) {
+            OTPVerificationScreen(
+                onOTPVerified = { otp ->
+                    // Navigate to password reset screen or back to login
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Start.route) { inclusive = true }
+                    }
+                },
+                onMaxAttemptsReached = {
+                    // Navigate to maximum attempts screen
+                    navController.navigate(Screen.MaximumAttempts.route)
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(Screen.MaximumAttempts.route) {
+            MaximumAttemptsScreen(
+                onOkayClick = {
+                    // Navigate back to login or main screen
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Start.route) { inclusive = true }
+                    }
+                },
+                onSendAgainClick = {
+                    // Navigate back to forgot password screen
+                    navController.navigate(Screen.ForgotPassword.route) {
+                        popUpTo(Screen.MaximumAttempts.route) { inclusive = true }
+                    }
+                },
+                onCancelClick = {
+                    // Navigate back to login
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Start.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
         // Main app screens
         composable(Screen.Shop.route) {
             ShopScreen(
@@ -105,6 +202,7 @@ fun AppNavigation(navController: NavHostController) {
                         "search" -> navController.navigate(Screen.Search.route)
                         "cart" -> navController.navigate(Screen.Cart.route)
                         "profile" -> navController.navigate(Screen.Profile.route)
+                        "categories" -> navController.navigate(Screen.Categories.route)
                     }
                 },
                 currentRoute = "shop"
@@ -112,8 +210,7 @@ fun AppNavigation(navController: NavHostController) {
         }
         
         composable(Screen.Search.route) {
-            SearchResultsScreen(
-                searchQuery = "Socks X",
+            SearchScreen(
                 onNavigate = { route ->
                     when (route) {
                         "shop" -> navController.navigate(Screen.Shop.route)
@@ -158,6 +255,24 @@ fun AppNavigation(navController: NavHostController) {
         composable(Screen.Profile.route) {
             // Navigate to Settings when Profile is clicked
             navController.navigate(Screen.Settings.route)
+        }
+        
+        composable(Screen.Categories.route) {
+            CategoriesScreen(
+                onNavigate = { route ->
+                    when (route) {
+                        "shop" -> navController.navigate(Screen.Shop.route)
+                        "search" -> navController.navigate(Screen.Search.route)
+                        "cart" -> navController.navigate(Screen.Cart.route)
+                        "profile" -> navController.navigate(Screen.Profile.route)
+                    }
+                },
+                onCategoryClick = { categoryId ->
+                    // Handle category click - could navigate to category products
+                    navController.popBackStack()
+                },
+                currentRoute = "categories"
+            )
         }
         
         // Product screens
@@ -311,8 +426,8 @@ fun AppNavigation(navController: NavHostController) {
                     navController.popBackStack()
                 },
                 onLanguageSelect = { languageId ->
-                    // Handle language selection
-                    navController.popBackStack()
+                    // Handle language selection - recreate activity to apply new language
+                    onLanguageChange()
                 },
                 currentRoute = "profile"
             )

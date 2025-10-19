@@ -15,27 +15,28 @@ private val DarkColorScheme = darkColorScheme(
     primary = BluePrimary,
     secondary = BlueLight,
     tertiary = BlueDark,
-    background = Black,
-    surface = GrayDark,
+    background = BackgroundDark,
+    surface = SurfaceDark,
     onPrimary = White,
     onSecondary = Black,
     onTertiary = White,
     onBackground = White,
-    onSurface = White
+    onSurface = White,
+    outline = BorderDark
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = BluePrimary,
     secondary = BlueLight,
     tertiary = BlueDark,
-    background = White,
-    surface = White,
+    background = BackgroundLight,
+    surface = SurfaceLight,
     onPrimary = White,
     onSecondary = Black,
     onTertiary = White,
-    onBackground = Black,
-    onSurface = Black,
-    outline = GrayLight
+    onBackground = TextPrimary,
+    onSurface = TextPrimary,
+    outline = BorderLight
 )
 
 @Composable

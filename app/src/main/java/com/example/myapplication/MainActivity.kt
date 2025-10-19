@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,12 +17,15 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.utils.LanguageManager
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        LanguageManager.initialize(newBase)
+        val context = LanguageManager.applyLanguage(newBase)
+        super.attachBaseContext(context)
+    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        
-        // Initialize Language Manager
-        LanguageManager.initialize(this)
         
         setContent {
             MyApplicationTheme {
@@ -30,7 +34,13 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    AppNavigation(navController = navController)
+                    AppNavigation(
+                        navController = navController,
+                        onLanguageChange = {
+                            // Recreate activity to apply new language
+                            recreate()
+                        }
+                    )
                 }
             }
         }

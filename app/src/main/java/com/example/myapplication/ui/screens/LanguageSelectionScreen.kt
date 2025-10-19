@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.ui.components.StatureBottomNavigation
 import com.example.myapplication.utils.LanguageManager
 import com.example.myapplication.utils.getStringResource
 import com.example.myapplication.R
@@ -78,17 +77,10 @@ fun LanguageSelectionScreen(
                 
                 // Bottom spacing for navigation
                 item {
-                    Spacer(modifier = Modifier.height(100.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }
-        
-        // Bottom Navigation
-        StatureBottomNavigation(
-            currentRoute = currentRoute,
-            onNavigate = onNavigate,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
     }
 }
 

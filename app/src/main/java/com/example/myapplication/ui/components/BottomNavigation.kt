@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
+import com.example.myapplication.utils.getStringResource
 
 data class BottomNavItem(
     val icon: ImageVector,
@@ -29,10 +31,10 @@ fun StatureBottomNavigation(
     modifier: Modifier = Modifier
 ) {
     val bottomNavItems = listOf(
-        BottomNavItem(Icons.Default.Home, "Home", "shop"),
-        BottomNavItem(Icons.Default.Search, "Search", "search"),
-        BottomNavItem(Icons.Default.ShoppingCart, "Cart", "cart"),
-        BottomNavItem(Icons.Default.Person, "Profile", "profile")
+        BottomNavItem(Icons.Default.Home, getStringResource(R.string.home), "shop"),
+        BottomNavItem(Icons.Default.Search, getStringResource(R.string.search), "search"),
+        BottomNavItem(Icons.Default.ShoppingCart, getStringResource(R.string.cart), "cart"),
+        BottomNavItem(Icons.Default.Person, getStringResource(R.string.profile), "profile")
     )
 
     Card(

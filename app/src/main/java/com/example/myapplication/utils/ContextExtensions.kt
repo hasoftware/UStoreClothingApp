@@ -6,11 +6,13 @@ import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun Context.getStringResource(id: Int): String {
-    return this.getString(id)
+    val localizedContext = LanguageManager.applyLanguage(this)
+    return localizedContext.getString(id)
 }
 
 @Composable
 fun getStringResource(id: Int): String {
     val context = LocalContext.current
-    return context.getString(id)
+    val localizedContext = LanguageManager.applyLanguage(context)
+    return localizedContext.getString(id)
 }

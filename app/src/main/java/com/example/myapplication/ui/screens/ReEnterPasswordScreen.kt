@@ -2,6 +2,7 @@ package com.example.myapplication.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -15,36 +16,62 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.ui.animations.fadeIn
+import com.example.myapplication.ui.animations.slideInFromBottom
+import com.example.myapplication.ui.theme.BlueDark
+import com.example.myapplication.ui.theme.BlueLight
 import com.example.myapplication.ui.theme.MyApplicationTheme
-import com.example.myapplication.ui.theme.BluePrimary
 import com.example.myapplication.ui.theme.White
-import com.example.myapplication.ui.animations.*
 
 @Composable
-fun CreateAccountScreen(
-    onDoneClick: (String) -> Unit,
+fun ReEnterPasswordScreen(
+    onPasswordConfirmed: (String) -> Unit,
     onCancelClick: () -> Unit
 ) {
-    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var phoneNumber by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(White)
     ) {
+        // Background decorative shapes
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 60.dp, end = 40.dp)
+        ) {
+            // Large blue shape
+            Box(
+                modifier = Modifier
+                    .size(150.dp)
+                    .background(BlueDark, CircleShape)
+                    .align(Alignment.TopEnd)
+            )
+
+            // Medium blue shape
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .background(BlueLight, CircleShape)
+                    .align(Alignment.TopEnd)
+                    .padding(top = 20.dp, end = 40.dp)
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(60.dp))
-            
+
             // Progress bar
             Box(
                 modifier = Modifier
@@ -54,77 +81,88 @@ fun CreateAccountScreen(
                     .background(Color(0xFF000000))
                     .fadeIn(delay = 100)
             )
-            
-            Spacer(modifier = Modifier.height(78.dp))
-            
+
+            Spacer(modifier = Modifier.height(100.dp))
+
+            // Avatar placeholder
+            Box(
+                modifier = Modifier
+                    .size(106.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFE0E0E0)) // Placeholder color
+                    .fadeIn(delay = 200),
+                contentAlignment = Alignment.Center
+            ) {
+                // You can add an Image here if you have an avatar asset
+                Text(
+                    text = "👤", // Placeholder for avatar
+                    fontSize = 48.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             // Title
             Text(
-                text = "Create\nAccount",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontSize = 50.sp,
+                text = "Hello, Stacy!",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF212121)
                 ),
-                lineHeight = 54.sp,
-                modifier = Modifier.fadeIn(delay = 200)
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fadeIn(delay = 300)
             )
-            
-            Spacer(modifier = Modifier.height(155.dp))
-            
-            // Form fields
-            FormField(
-                value = email,
-                onValueChange = { email = it },
-                placeholder = "Email",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .slideInFromBottom(delay = 300)
-            )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
+            // Subtitle
+            Text(
+                text = "Re-enter your password",
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontSize = 19.sp,
+                    color = Color(0xFF212121)
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fadeIn(delay = 400)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Password Form field
             FormField(
                 value = password,
                 onValueChange = { password = it },
-                placeholder = "Password",
+                placeholder = "Re-enter your password",
                 isPassword = true,
                 passwordVisible = passwordVisible,
                 onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .slideInFromBottom(delay = 400)
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            FormField(
-                value = phoneNumber,
-                onValueChange = { phoneNumber = it },
-                placeholder = "Phone Number",
-                modifier = Modifier
-                    .fillMaxWidth()
                     .slideInFromBottom(delay = 500)
             )
-            
-            Spacer(modifier = Modifier.weight(1f))
-            
-            // Done button
+
+            Spacer(modifier = Modifier.height(56.dp))
+
+            // Continue button
             Button(
-                onClick = { onDoneClick(password) },
+                onClick = { onPasswordConfirmed(password) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(61.dp)
                     .slideInFromBottom(delay = 600),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = BluePrimary
+                    containerColor = Color(0xFF007AFF) // BluePrimary
                 ),
                 shape = RoundedCornerShape(16.dp),
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 8.dp
-                )
+                ),
+                enabled = password.isNotEmpty()
             ) {
                 Text(
-                    text = "Done",
+                    text = "Continue",
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -132,15 +170,33 @@ fun CreateAccountScreen(
                     )
                 )
             }
-            
-            Spacer(modifier = Modifier.height(40.dp))
-            
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            // Forgot password link
+            TextButton(
+                onClick = { /* Handle forgot password */ },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fadeIn(delay = 700)
+            ) {
+                Text(
+                    text = "Forgot your password?",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = 15.sp,
+                        color = Color(0xFF212121).copy(alpha = 0.9f)
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(18.dp))
+
             // Cancel button
             TextButton(
                 onClick = onCancelClick,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .fadeIn(delay = 700)
+                    .fadeIn(delay = 800)
             ) {
                 Text(
                     text = "Cancel",
@@ -150,12 +206,13 @@ fun CreateAccountScreen(
                     )
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
 
+// Reusing FormField from other screens for consistency
 @Composable
 private fun FormField(
     value: String,
@@ -214,22 +271,8 @@ private fun FormField(
 
 @Preview(showBackground = true)
 @Composable
-fun CreateAccountScreenPreview() {
+fun ReEnterPasswordScreenPreview() {
     MyApplicationTheme {
-        CreateAccountScreen(
-            onDoneClick = { },
-            onCancelClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, device = "spec:width=360dp,height=640dp")
-@Composable
-fun CreateAccountScreenPreviewSmall() {
-    MyApplicationTheme {
-        CreateAccountScreen(
-            onDoneClick = { },
-            onCancelClick = {}
-        )
+        ReEnterPasswordScreen(onPasswordConfirmed = {}, onCancelClick = {})
     }
 }

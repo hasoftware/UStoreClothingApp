@@ -1,18 +1,17 @@
 package com.example.myapplication.ui.screens
 
-import androidx.compose.foundation.Image
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,123 +19,136 @@ import androidx.compose.ui.unit.sp
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.theme.BluePrimary
 import com.example.myapplication.ui.theme.White
-import com.example.myapplication.utils.getStringResource
-import com.example.myapplication.R
+import com.example.myapplication.ui.theme.Black
+import com.example.myapplication.ui.animations.*
 
 @Composable
 fun StartScreen(
-    onGetStartedClick: () -> Unit,
-    onAlreadyHaveAccountClick: () -> Unit
+    onGetStartedClick: () -> Unit = {},
+    onAlreadyHaveAccountClick: () -> Unit = {}
 ) {
+    
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(White)
     ) {
+        // Main content
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Status bar spacing
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(120.dp))
             
-            // Logo and branding
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Logo with shopping bag icon
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .background(White),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Shopping bag icon placeholder (you can replace with actual icon)
-                    Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .background(BluePrimary, CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "S",
-                            style = MaterialTheme.typography.headlineLarge,
-                            color = White
-                        )
-                    }
-                }
-                
-                // App title
-                Text(
-                    text = getStringResource(R.string.app_name),
-                    style = MaterialTheme.typography.displayLarge,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center
-                )
-                
-                // Subtitle
-                Text(
-                    text = "Style That Empowers.",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center
-                )
-            }
+            // Logo/Brand name
+            Text(
+                text = "Stature",
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    fontSize = 52.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF212121)
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fadeIn(delay = 200)
+                    .padding(horizontal = 16.dp)
+            )
             
-            // Bottom section with buttons
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Subtitle
+            Text(
+                text = "Style That Empowers.",
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontSize = 19.sp,
+                    color = Color(0xFF212121)
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fadeIn(delay = 400)
+                    .padding(horizontal = 16.dp)
+            )
+            
+            Spacer(modifier = Modifier.weight(1f))
+            
+            // Get Started Button
+            Button(
+                onClick = onGetStartedClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(61.dp)
+                    .slideInFromBottom(delay = 600),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = BluePrimary
+                ),
+                shape = RoundedCornerShape(16.dp),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 8.dp
+                )
             ) {
-                // Get Started button
-                Button(
-                    onClick = onGetStartedClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = BluePrimary
-                    ),
-                    shape = RoundedCornerShape(28.dp)
-                ) {
-                    Text(
-                        text = getStringResource(R.string.lets_get_started),
-                        style = MaterialTheme.typography.labelLarge,
+                Text(
+                    text = "Let's get started",
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold,
                         color = White
                     )
-                }
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(40.dp))
+            
+            // Already have account text
+            Row(
+                modifier = Modifier
+                    .fadeIn(delay = 800)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "I already have an account",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = 15.sp,
+                        color = Color(0xFF212121).copy(alpha = 0.9f)
+                    )
+                )
                 
-                // Already have account link
+                Spacer(modifier = Modifier.width(8.dp))
+                
                 TextButton(
-                    onClick = onAlreadyHaveAccountClick,
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = onAlreadyHaveAccountClick
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "I already have an account",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Black
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "→",
-                            style = MaterialTheme.typography.bodyMedium,
+                    Text(
+                        text = "Sign In",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Medium,
                             color = BluePrimary
                         )
-                    }
+                    )
                 }
             }
             
-            // Bottom spacing
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(32.dp))
+        }
+        
+        // Top progress indicator (optional)
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 60.dp)
+                .fadeIn(delay = 100)
+        ) {
+            Box(
+                modifier = Modifier
+                    .width(134.dp)
+                    .height(5.dp)
+                    .clip(RoundedCornerShape(34.dp))
+                    .background(Color(0xFF000000))
+            )
         }
     }
 }
@@ -145,9 +157,14 @@ fun StartScreen(
 @Composable
 fun StartScreenPreview() {
     MyApplicationTheme {
-        StartScreen(
-            onGetStartedClick = {},
-            onAlreadyHaveAccountClick = {}
-        )
+        StartScreen()
+    }
+}
+
+@Preview(showBackground = true, device = "spec:width=360dp,height=640dp")
+@Composable
+fun StartScreenPreviewSmall() {
+    MyApplicationTheme {
+        StartScreen()
     }
 }

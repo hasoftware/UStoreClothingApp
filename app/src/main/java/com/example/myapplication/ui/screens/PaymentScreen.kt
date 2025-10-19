@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.ui.components.StatureBottomNavigation
 
 data class PaymentItem(
     val id: String,
@@ -150,12 +149,6 @@ fun PaymentScreen(
             modifier = Modifier.align(Alignment.BottomCenter)
         )
         
-        // Bottom Navigation
-        StatureBottomNavigation(
-            currentRoute = currentRoute,
-            onNavigate = onNavigate,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
     }
 }
 

@@ -2,10 +2,8 @@ package com.example.myapplication.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,14 +23,17 @@ import com.example.myapplication.ui.theme.White
 import com.example.myapplication.ui.animations.*
 
 @Composable
-fun CreateAccountScreen(
-    onDoneClick: (String) -> Unit,
-    onCancelClick: () -> Unit
+fun ConfirmPasswordScreen(
+    onPasswordConfirmed: (String) -> Unit,
+    onCancelClick: () -> Unit,
+    initialPassword: String = ""
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var phoneNumber by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    var showPasswordMismatch by remember { mutableStateOf(false) }
+    
+    // Kiểm tra mật khẩu khớp
+    val isPasswordMatch = confirmPassword == initialPassword && confirmPassword.isNotEmpty()
     
     Box(
         modifier = Modifier
@@ -55,62 +57,102 @@ fun CreateAccountScreen(
                     .fadeIn(delay = 100)
             )
             
-            Spacer(modifier = Modifier.height(78.dp))
+            Spacer(modifier = Modifier.height(157.dp))
+            
+            // Avatar placeholder
+            Box(
+                modifier = Modifier
+                    .size(106.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFE0E0E0))
+                    .align(Alignment.CenterHorizontally)
+                    .fadeIn(delay = 200)
+            ) {
+                // Avatar placeholder - có thể thay bằng Image sau
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(0xFFBDBDBD))
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(24.dp))
             
             // Title
             Text(
-                text = "Create\nAccount",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontSize = 50.sp,
+                text = "Hello, Stacy!",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF212121)
                 ),
-                lineHeight = 54.sp,
-                modifier = Modifier.fadeIn(delay = 200)
-            )
-            
-            Spacer(modifier = Modifier.height(155.dp))
-            
-            // Form fields
-            FormField(
-                value = email,
-                onValueChange = { email = it },
-                placeholder = "Email",
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .slideInFromBottom(delay = 300)
+                    .fadeIn(delay = 300)
             )
             
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             
+            // Subtitle
+            Text(
+                text = "Re-enter your password",
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontSize = 19.sp,
+                    color = Color(0xFF212121)
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fadeIn(delay = 400)
+            )
+            
+            Spacer(modifier = Modifier.height(46.dp))
+            
+            // Password form field
             FormField(
-                value = password,
-                onValueChange = { password = it },
-                placeholder = "Password",
+                value = confirmPassword,
+                onValueChange = { 
+                    confirmPassword = it
+                    showPasswordMismatch = false
+                },
+                placeholder = "Re-enter your password",
                 isPassword = true,
                 passwordVisible = passwordVisible,
                 onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .slideInFromBottom(delay = 400)
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            FormField(
-                value = phoneNumber,
-                onValueChange = { phoneNumber = it },
-                placeholder = "Phone Number",
+                showError = showPasswordMismatch,
                 modifier = Modifier
                     .fillMaxWidth()
                     .slideInFromBottom(delay = 500)
             )
             
-            Spacer(modifier = Modifier.weight(1f))
+            // Error message
+            if (showPasswordMismatch) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Passwords do not match",
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontSize = 14.sp,
+                        color = Color(0xFFFF3838) // Màu đỏ cho lỗi
+                    ),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fadeIn()
+                )
+            }
             
-            // Done button
+            Spacer(modifier = Modifier.height(if (showPasswordMismatch) 40.dp else 56.dp))
+            
+            // Continue button
             Button(
-                onClick = { onDoneClick(password) },
+                onClick = { 
+                    if (isPasswordMatch) {
+                        onPasswordConfirmed(confirmPassword)
+                    } else {
+                        showPasswordMismatch = true
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(61.dp)
@@ -121,10 +163,11 @@ fun CreateAccountScreen(
                 shape = RoundedCornerShape(16.dp),
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 8.dp
-                )
+                ),
+                enabled = confirmPassword.isNotEmpty()
             ) {
                 Text(
-                    text = "Done",
+                    text = "Continue",
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -133,7 +176,7 @@ fun CreateAccountScreen(
                 )
             }
             
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             
             // Cancel button
             TextButton(
@@ -164,7 +207,8 @@ private fun FormField(
     modifier: Modifier = Modifier,
     isPassword: Boolean = false,
     passwordVisible: Boolean = false,
-    onPasswordVisibilityToggle: (() -> Unit)? = null
+    onPasswordVisibilityToggle: (() -> Unit)? = null,
+    showError: Boolean = false
 ) {
     OutlinedTextField(
         value = value,
@@ -174,17 +218,17 @@ private fun FormField(
                 text = placeholder,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontSize = 14.sp,
-                    color = Color(0xFFD1D1D1)
+                    color = if (showError) Color(0xFFFF3838) else Color(0xFFD1D1D1)
                 )
             )
         },
         modifier = modifier.height(52.dp),
         shape = RoundedCornerShape(59.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color.Transparent,
-            unfocusedBorderColor = Color.Transparent,
-            focusedContainerColor = Color(0xFFF7F7F7),
-            unfocusedContainerColor = Color(0xFFF7F7F7),
+            focusedBorderColor = if (showError) Color(0xFFFF3838) else Color.Transparent,
+            unfocusedBorderColor = if (showError) Color(0xFFFF3838) else Color.Transparent,
+            focusedContainerColor = if (showError) Color(0xFFFFF5F5) else Color(0xFFF7F7F7),
+            unfocusedContainerColor = if (showError) Color(0xFFFFF5F5) else Color(0xFFF7F7F7),
             focusedTextColor = Color(0xFF212121),
             unfocusedTextColor = Color(0xFF212121)
         ),
@@ -195,15 +239,16 @@ private fun FormField(
         visualTransformation = if (isPassword && !passwordVisible) PasswordVisualTransformation() else VisualTransformation.None,
         trailingIcon = if (isPassword && onPasswordVisibilityToggle != null) {
             {
-                IconButton(
+                TextButton(
                     onClick = onPasswordVisibilityToggle,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(48.dp)
                 ) {
-                    Icon(
-                        imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                        contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                        tint = Color(0xFF8E8E93),
-                        modifier = Modifier.size(20.dp)
+                    Text(
+                        text = if (passwordVisible) "Hide" else "Show",
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = 12.sp,
+                            color = Color(0xFF8E8E93)
+                        )
                     )
                 }
             }
@@ -214,22 +259,24 @@ private fun FormField(
 
 @Preview(showBackground = true)
 @Composable
-fun CreateAccountScreenPreview() {
+fun ConfirmPasswordScreenPreview() {
     MyApplicationTheme {
-        CreateAccountScreen(
-            onDoneClick = { },
-            onCancelClick = {}
+        ConfirmPasswordScreen(
+            onPasswordConfirmed = {},
+            onCancelClick = {},
+            initialPassword = "test123"
         )
     }
 }
 
 @Preview(showBackground = true, device = "spec:width=360dp,height=640dp")
 @Composable
-fun CreateAccountScreenPreviewSmall() {
+fun ConfirmPasswordScreenPreviewSmall() {
     MyApplicationTheme {
-        CreateAccountScreen(
-            onDoneClick = { },
-            onCancelClick = {}
+        ConfirmPasswordScreen(
+            onPasswordConfirmed = {},
+            onCancelClick = {},
+            initialPassword = "test123"
         )
     }
 }

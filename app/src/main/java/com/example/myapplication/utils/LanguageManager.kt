@@ -2,6 +2,7 @@ package com.example.myapplication.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -27,7 +28,7 @@ object LanguageManager {
     }
     
     private fun getSystemLanguage(): String {
-        return Locale.getDefault().language.takeIf { it in listOf("en", "vi") } ?: "en"
+        return Locale.getDefault().language.takeIf { it in listOf("en", "vi", "fr", "ru") } ?: "en"
     }
     
     fun getLocale(): Locale {
@@ -38,6 +39,16 @@ object LanguageManager {
             "ru" -> Locale("ru", "RU")
             else -> Locale("en", "US")
         }
+    }
+    
+    fun applyLanguage(context: Context): Context {
+        val locale = getLocale()
+        Locale.setDefault(locale)
+        
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+        
+        return context.createConfigurationContext(config)
     }
     
     fun getLanguageDisplayName(languageCode: String): String {

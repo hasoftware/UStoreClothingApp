@@ -16,7 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.ui.components.StatureBottomNavigation
+import com.example.myapplication.R
+import com.example.myapplication.utils.getStringResource
 
 @Composable
 fun EditShippingAddressScreen(
@@ -54,7 +55,7 @@ fun EditShippingAddressScreen(
                 ) {
                     // Address field
                     AddressField(
-                        label = "Address",
+                        label = getStringResource(R.string.address),
                         value = address,
                         onValueChange = { address = it },
                         modifier = Modifier.fillMaxWidth()
@@ -62,7 +63,7 @@ fun EditShippingAddressScreen(
                     
                     // Town / City field
                     AddressField(
-                        label = "Town / City",
+                        label = getStringResource(R.string.town_city),
                         value = townCity,
                         onValueChange = { townCity = it },
                         modifier = Modifier.fillMaxWidth()
@@ -70,7 +71,7 @@ fun EditShippingAddressScreen(
                     
                     // Postcode field
                     AddressField(
-                        label = "Postcode",
+                        label = getStringResource(R.string.postcode),
                         value = postcode,
                         onValueChange = { postcode = it },
                         modifier = Modifier.fillMaxWidth()
@@ -78,7 +79,7 @@ fun EditShippingAddressScreen(
                     
                     // Phone Number field
                     AddressField(
-                        label = "Phone Number",
+                        label = getStringResource(R.string.phone_number),
                         value = phoneNumber,
                         onValueChange = { phoneNumber = it },
                         modifier = Modifier.fillMaxWidth()
@@ -99,24 +100,17 @@ fun EditShippingAddressScreen(
                     shape = RoundedCornerShape(28.dp)
                 ) {
                     Text(
-                        text = "Save Changes",
+                        text = getStringResource(R.string.save_changes),
                         color = Color.White,
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp
                     )
                 }
                 
-                // Bottom spacing for navigation
-                Spacer(modifier = Modifier.height(100.dp))
+                // Bottom spacing
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
-        
-        // Bottom Navigation
-        StatureBottomNavigation(
-            currentRoute = currentRoute,
-            onNavigate = onNavigate,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
     }
 }
 
@@ -140,14 +134,14 @@ fun EditShippingAddressHeader(onBackClick: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = getStringResource(R.string.back),
                 tint = Color.Black
             )
         }
         
         // Title
         Text(
-            text = "Settings",
+            text = getStringResource(R.string.settings),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
@@ -156,7 +150,7 @@ fun EditShippingAddressHeader(onBackClick: () -> Unit) {
         
         // Subtitle
         Text(
-            text = "Shipping Address",
+            text = getStringResource(R.string.shipping_address),
             fontSize = 16.sp,
             color = Color(0xFF8E8E93),
             modifier = Modifier
@@ -190,7 +184,7 @@ fun AddressField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Required") },
+            placeholder = { Text(getStringResource(R.string.required)) },
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF007AFF),

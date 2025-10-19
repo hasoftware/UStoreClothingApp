@@ -19,7 +19,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.ui.components.StatureBottomNavigation
+import com.example.myapplication.R
+import com.example.myapplication.utils.getStringResource
 
 @Composable
 fun SettingsProfileScreen(
@@ -118,24 +119,17 @@ fun SettingsProfileScreen(
                     shape = RoundedCornerShape(28.dp)
                 ) {
                     Text(
-                        text = "Save Changes",
+                        text = getStringResource(R.string.save_changes),
                         color = Color.White,
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp
                     )
                 }
                 
-                // Bottom spacing for navigation
-                Spacer(modifier = Modifier.height(100.dp))
+                // Bottom spacing
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
-        
-        // Bottom Navigation
-        StatureBottomNavigation(
-            currentRoute = currentRoute,
-            onNavigate = onNavigate,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
     }
 }
 
@@ -159,14 +153,14 @@ fun SettingsProfileHeader(onBackClick: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = getStringResource(R.string.back),
                 tint = Color.Black
             )
         }
         
         // Title
         Text(
-            text = "Settings",
+            text = getStringResource(R.string.settings),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
@@ -175,7 +169,7 @@ fun SettingsProfileHeader(onBackClick: () -> Unit) {
         
         // Subtitle
         Text(
-            text = "Your Profile",
+            text = getStringResource(R.string.profile_settings),
             fontSize = 16.sp,
             color = Color(0xFF8E8E93),
             modifier = Modifier
@@ -215,7 +209,7 @@ fun AvatarSection() {
         ) {
             Icon(
                 imageVector = Icons.Default.Edit,
-                contentDescription = "Edit",
+                contentDescription = getStringResource(R.string.edit),
                 tint = Color.White,
                 modifier = Modifier.size(16.dp)
             )

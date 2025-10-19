@@ -20,13 +20,6 @@ import androidx.compose.ui.unit.sp
 import com.example.myapplication.ui.components.StatureHeader
 import com.example.myapplication.ui.components.StatureBottomNavigation
 
-data class SearchProduct(
-    val id: String,
-    val name: String,
-    val description: String,
-    val price: String,
-    val imageUrl: String = ""
-)
 
 @Composable
 fun SearchResultsScreen(
