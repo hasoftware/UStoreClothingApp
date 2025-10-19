@@ -1,24 +1,49 @@
 package com.example.myapplication.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.R
+import com.example.myapplication.ui.components.StatureBottomNavigation
+import com.example.myapplication.ui.components.EditButton
 
 data class PaymentItem(
     val id: String,
@@ -50,542 +75,731 @@ fun PaymentScreen(
     onEditPaymentClick: () -> Unit,
     currentRoute: String = "cart"
 ) {
-    var selectedShipping by remember { mutableStateOf("standard") }
-    var selectedPayment by remember { mutableStateOf("card") }
-    
-    val paymentItems = remember {
-        listOf(
-            PaymentItem("1", "Lorem ipsum dolor sit amet consectetur.", "$17,00"),
-            PaymentItem("2", "Lorem ipsum dolor sit amet consectetur.", "$17,00")
-        )
-    }
-    
-    val shippingOptions = remember {
-        listOf(
-            ShippingOption("standard", "Standard", "5-7 days", "FREE", true),
-            ShippingOption("express", "Express", "1-2 days", "$12,00")
-        )
-    }
-    
-    val paymentMethods = remember {
-        listOf(
-            PaymentMethod("card", "Card", true),
-            PaymentMethod("cod", "COD")
-        )
-    }
-    
-    val totalAmount = paymentItems.sumOf { item ->
-        item.price.replace("$", "").replace(",", "").toDoubleOrNull() ?: 0.0
-    }
-    
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            // Header
-            PaymentHeader()
-            
-            // Content
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Shipping Address
-                item {
-                    ShippingAddressSection(onEditClick = onEditAddressClick)
-                }
-                
-                // Contact Information
-                item {
-                    ContactInfoSection(onEditClick = onEditContactClick)
-                }
-                
-                // Items
-                item {
-                    ItemsSection(items = paymentItems)
-                }
-                
-                // Shipping Options
-                item {
-                    ShippingOptionsSection(
-                        options = shippingOptions,
-                        selectedOption = selectedShipping,
-                        onOptionSelect = { selectedShipping = it }
-                    )
-                }
-                
-                // Delivery Info
-                item {
-                    DeliveryInfoSection()
-                }
-                
-                // Payment Method
-                item {
-                    PaymentMethodSection(
-                        methods = paymentMethods,
-                        selectedMethod = selectedPayment,
-                        onMethodSelect = { selectedPayment = it },
-                        onEditClick = onEditPaymentClick
-                    )
-                }
-                
-                // Bottom spacing
-                item {
-                    Spacer(modifier = Modifier.height(100.dp))
-                }
-            }
-        }
-        
-        // Bottom section with total and pay
-        PaymentBottomSection(
-            totalAmount = totalAmount,
-            onPayClick = onPayClick,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
-        
-    }
+    Payment(
+        modifier = Modifier.fillMaxSize(),
+        onNavigate = onNavigate,
+        onPayClick = onPayClick,
+        onEditAddressClick = onEditAddressClick,
+        onEditContactClick = onEditContactClick,
+        onEditPaymentClick = onEditPaymentClick,
+        currentRoute = currentRoute
+    )
 }
 
 @Composable
-fun PaymentHeader() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 16.dp)
+fun Payment(
+    modifier: Modifier = Modifier,
+    onNavigate: (String) -> Unit = {},
+    onPayClick: () -> Unit = {},
+    onEditAddressClick: () -> Unit = {},
+    onEditContactClick: () -> Unit = {},
+    onEditPaymentClick: () -> Unit = {},
+    currentRoute: String = "cart"
+) {
+    Box(
+        modifier = modifier
+            .requiredWidth(width = 375.dp)
+            .requiredHeight(height = 876.dp)
+            .background(color = Color.White)
     ) {
-        // Status bar spacing
-        Spacer(modifier = Modifier.height(20.dp))
+        // Status bar
+        Box(
+            modifier = Modifier
+                .requiredWidth(width = 375.dp)
+                .requiredHeight(height = 44.dp)
+        ) {
+            Text(
+                text = "9:41",
+                color = Color.Black,
+                textAlign = TextAlign.Center,
+                style = TextStyle(fontSize = 14.sp),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterStart)
+                    .offset(x = 21.dp, y = 13.dp)
+                    .fillMaxWidth()
+                    .requiredHeight(height = 16.dp)
+            )
+        }
         
         // Title
         Text(
-            text = "Payment",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
+            text = stringResource(id = R.string.payment),
+            color = Color(0xff202020),
+            lineHeight = 1.29.em,
+            style = TextStyle(
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.28).sp
+            ),
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 20.dp, y = 48.dp)
         )
-    }
-}
-
-@Composable
-fun ContactInfoSection(onEditClick: () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF5F5F5)
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+        
+        // Shipping Address
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 20.dp, y = 95.dp)
+                .requiredWidth(width = 335.dp)
+                .requiredHeight(height = 70.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Contact Information",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color(0xFF8E8E93)
-                )
-                
-                IconButton(
-                    onClick = onEditClick,
-                    modifier = Modifier.size(24.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Contact",
-                        tint = Color(0xFF007AFF),
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            Text(
-                text = "+84932000000",
-                fontSize = 14.sp,
-                color = Color.Black
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .background(color = Color(0xfff9f9f9))
             )
-            
             Text(
-                text = "amandamorgan@example.com",
-                fontSize = 14.sp,
-                color = Color.Black
+                text = stringResource(id = R.string.shipping_address),
+                color = Color(0xff202020),
+                lineHeight = 1.29.em,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.14).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterStart)
+                    .offset(x = 16.dp, y = (-17).dp)
+                    .fillMaxWidth()
+            )
+            Box(
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterEnd)
+                    .offset(x = (-16).dp, y = 0.dp)
+                    .size(30.dp)
+            ) {
+                EditButton(
+                    onEditClick = onEditAddressClick,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            Text(
+                text = stringResource(id = R.string.sample_address),
+                color = Color.Black,
+                lineHeight = 1.5.em,
+                style = TextStyle(fontSize = 10.sp),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterStart)
+                    .offset(x = 16.dp, y = 11.5.dp)
+                    .fillMaxWidth()
+                    .requiredHeight(height = 29.dp)
             )
         }
-    }
-}
-
-@Composable
-fun ItemsSection(items: List<PaymentItem>) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+        
+        // Contact Information
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 20.dp, y = 171.dp)
+                .requiredWidth(width = 335.dp)
+                .requiredHeight(height = 70.dp)
         ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .background(color = Color(0xfff9f9f9))
+            )
             Text(
-                text = "Items ${items.size}",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
+                text = stringResource(id = R.string.contact_information),
+                color = Color(0xff202020),
+                lineHeight = 1.29.em,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.14).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterStart)
+                    .offset(x = 16.dp, y = (-17).dp)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = "${stringResource(id = R.string.sample_phone)}\n${stringResource(id = R.string.sample_email)}",
+                color = Color.Black,
+                lineHeight = 1.5.em,
+                style = TextStyle(fontSize = 10.sp),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterStart)
+                    .offset(x = 16.dp, y = 10.5.dp)
+                    .fillMaxWidth()
+                    .requiredHeight(height = 33.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterEnd)
+                    .offset(x = (-16).dp, y = 0.dp)
+                    .size(30.dp)
+            ) {
+                EditButton(
+                    onEditClick = onEditContactClick,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+        
+        // Items Section
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 20.dp, y = 261.dp)
+                .requiredWidth(width = 339.dp)
+                .requiredHeight(height = 171.dp)
+        ) {
+            // Items count
+            Text(
+                text = "2",
+                color = Color.Black,
+                textAlign = TextAlign.Center,
+                lineHeight = 1.33.em,
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.18).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.TopStart)
+                    .offset(x = 0.dp, y = (-70.5).dp)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = stringResource(id = R.string.items),
+                color = Color(0xff202020),
+                lineHeight = 1.43.em,
+                style = TextStyle(
+                    fontSize = 21.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.21).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.TopStart)
+                    .offset(x = 0.dp, y = (-66.5).dp)
+                    .fillMaxWidth()
             )
             
-            Spacer(modifier = Modifier.height(12.dp))
+            // Item 1
+            ItemCard(
+                modifier = Modifier
+                    .align(alignment = Alignment.TopStart)
+                    .offset(x = 0.dp, y = 0.dp)
+                    .requiredWidth(width = 339.dp)
+                    .requiredHeight(height = 85.dp),
+                itemName = stringResource(id = R.string.sample_product_name),
+                itemPrice = stringResource(id = R.string.sample_price),
+                itemCount = "1"
+            )
             
-            items.forEach { item ->
-                Row(
+            // Item 2
+            ItemCard(
+                modifier = Modifier
+                    .align(alignment = Alignment.TopStart)
+                    .offset(x = 0.dp, y = 85.dp)
+                    .requiredWidth(width = 339.dp)
+                    .requiredHeight(height = 85.dp),
+                itemName = stringResource(id = R.string.sample_product_name),
+                itemPrice = stringResource(id = R.string.sample_price),
+                itemCount = "1"
+            )
+        }
+        
+        // Shipping Options
+        ShippingOptionsSection(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 20.dp, y = 454.dp)
+                .requiredWidth(width = 335.dp)
+                .requiredHeight(height = 152.dp)
+        )
+        
+        // Payment Method
+        PaymentMethodSection(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 20.dp, y = 626.dp)
+                .requiredWidth(width = 335.dp)
+                .requiredHeight(height = 74.dp),
+            onEditClick = onEditPaymentClick
+        )
+        
+        // Bottom section
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 0.dp, y = 732.dp)
+                .requiredWidth(width = 375.dp)
+                .requiredHeight(height = 60.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .requiredHeight(height = 60.dp)
+                    .background(color = Color(0xfff9f9f9))
+            )
+            TextButton(
+                onClick = onPayClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                contentPadding = PaddingValues(start = 227.dp, top = 10.dp, end = 20.dp, bottom = 10.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .requiredWidth(width = 128.dp)
+                        .requiredHeight(height = 40.dp)
                 ) {
-                    // Item thumbnail
                     Box(
                         modifier = Modifier
-                            .size(40.dp)
-                            .clip(RoundedCornerShape(4.dp))
-                            .background(Color(0xFFF5F5F5))
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clip(CircleShape)
-                                .background(Color(0xFF007AFF))
-                                .align(Alignment.Center),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "P",
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 10.sp
-                            )
-                        }
-                    }
-                    
-                    // Item info
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = item.name,
-                            fontSize = 12.sp,
-                            color = Color.Black,
-                            maxLines = 1,
-                            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
-                        )
-                    }
-                    
-                    // Item price
+                            .fillMaxSize()
+                            .clip(shape = RoundedCornerShape(11.dp))
+                            .background(color = Color(0xff202020))
+                    )
                     Text(
-                        text = item.price,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
+                        text = stringResource(id = R.string.pay),
+                        color = Color(0xfff3f3f3),
+                        textAlign = TextAlign.Center,
+                        lineHeight = 1.56.em,
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Light
+                        ),
+                        modifier = Modifier
+                            .align(alignment = Alignment.Center)
+                            .fillMaxWidth()
                     )
                 }
             }
+            Text(
+                text = stringResource(id = R.string.total),
+                color = Color.Black,
+                lineHeight = 1.3.em,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    letterSpacing = (-0.2).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterStart)
+                    .offset(x = 20.dp, y = 2.dp)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = "$34,00",
+                color = Color(0xff202020),
+                lineHeight = 1.22.em,
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.18).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterStart)
+                    .offset(x = 20.dp, y = 22.dp)
+                    .fillMaxWidth()
+            )
         }
+        
+        // Bottom Navigation
+        StatureBottomNavigation(
+            currentRoute = currentRoute,
+            onNavigate = onNavigate,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
+    }
+}
+
+@Composable
+fun ItemCard(
+    modifier: Modifier = Modifier,
+    itemName: String,
+    itemPrice: String,
+    itemCount: String
+) {
+    Box(
+        modifier = modifier
+    ) {
+        // Product image placeholder
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 5.dp, y = 50.dp)
+                .requiredSize(size = 50.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(CircleShape)
+                    .background(Color(0xFF007AFF))
+            )
+            Text(
+                text = "P",
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+        
+        // Item count badge
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 0.dp, y = 0.dp)
+                .requiredSize(size = 20.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFE5EBFC))
+                .border(border = BorderStroke(2.dp, Color.White))
+        )
+        Text(
+            text = itemCount,
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            lineHeight = 1.31.em,
+            style = TextStyle(
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.13).sp
+            ),
+            modifier = Modifier
+                .align(alignment = Alignment.Center)
+                .fillMaxWidth()
+        )
+        
+        // Item name
+        Text(
+            text = itemName,
+            color = Color.Black,
+            lineHeight = 1.33.em,
+            style = TextStyle(fontSize = 12.sp),
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 70.dp, y = 10.dp)
+                .fillMaxWidth()
+                .requiredHeight(height = 36.dp)
+        )
+        
+        // Item price
+        Text(
+            text = itemPrice,
+            color = Color(0xff202020),
+            textAlign = TextAlign.End,
+            lineHeight = 1.22.em,
+            style = TextStyle(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.18).sp
+            ),
+            modifier = Modifier
+                .align(alignment = Alignment.TopEnd)
+                .offset(x = 0.dp, y = 10.dp)
+                .fillMaxWidth()
+        )
     }
 }
 
 @Composable
 fun ShippingOptionsSection(
-    options: List<ShippingOption>,
-    selectedOption: String,
-    onOptionSelect: (String) -> Unit
+    modifier: Modifier = Modifier
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
+    Box(
+        modifier = modifier
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = "Shipping Options",
-                fontSize = 16.sp,
+        Text(
+            text = stringResource(id = R.string.shipping_options),
+            color = Color(0xff202020),
+            lineHeight = 1.43.em,
+            style = TextStyle(
+                fontSize = 21.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-            
-            Spacer(modifier = Modifier.height(12.dp))
-            
-            options.forEach { option ->
-                ShippingOptionItem(
-                    option = option,
-                    isSelected = selectedOption == option.id,
-                    onClick = { onOptionSelect(option.id) }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ShippingOptionItem(
-    option: ShippingOption,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                letterSpacing = (-0.21).sp
+            ),
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 0.dp, y = (-61).dp)
+                .fillMaxWidth()
+        )
+        
+        // Add Voucher button
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopEnd)
+                .offset(x = 0.dp, y = 0.dp)
+                .requiredWidth(width = 120.dp)
+                .requiredHeight(height = 30.dp)
         ) {
-            // Radio button
             Box(
                 modifier = Modifier
-                    .size(20.dp)
-                    .clip(CircleShape)
-                    .background(
-                        if (isSelected) Color(0xFF007AFF) else Color(0xFFE5E5EA)
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                if (isSelected) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Selected",
-                        tint = Color.White,
-                        modifier = Modifier.size(12.dp)
-                    )
-                }
-            }
-            
-            // Option info
-            Column {
-                Text(
-                    text = option.name,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black
-                )
-                Text(
-                    text = option.duration,
-                    fontSize = 12.sp,
-                    color = Color(0xFF8E8E93)
-                )
-            }
+                    .fillMaxSize()
+                    .clip(shape = RoundedCornerShape(11.dp))
+                    .border(border = BorderStroke(1.dp, Color(0xff004bfe)), shape = RoundedCornerShape(11.dp))
+            )
+            Text(
+                text = stringResource(id = R.string.add_voucher),
+                color = Color(0xff004bfe),
+                textAlign = TextAlign.Center,
+                lineHeight = 1.54.em,
+                style = TextStyle(fontSize = 13.sp),
+                modifier = Modifier
+                    .align(alignment = Alignment.Center)
+                    .fillMaxWidth()
+            )
         }
         
-        // Price
-        Text(
-            text = option.price,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            color = if (option.price == "FREE") Color(0xFF007AFF) else Color.Black
+        // Standard shipping option
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 0.dp, y = 0.dp)
+                .fillMaxWidth()
+                .requiredHeight(height = 40.dp)
+                .clip(shape = RoundedCornerShape(10.dp))
+                .background(color = Color(0xffe5ebfc))
         )
-    }
-}
-
-@Composable
-fun DeliveryInfoSection() {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFE8F4FD)
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
-    ) {
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.Center)
+                .offset(x = (-12.5).dp, y = 0.dp)
+                .requiredWidth(width = 72.dp)
+                .requiredHeight(height = 26.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(shape = MaterialTheme.shapes.small)
+                    .background(color = Color(0xfff5f8ff))
+            )
+            Text(
+                text = stringResource(id = R.string.days_5_7),
+                color = Color(0xff004cff),
+                textAlign = TextAlign.Center,
+                lineHeight = 1.31.em,
+                style = TextStyle(
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
+                    letterSpacing = (-0.13).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.Center)
+                    .fillMaxWidth()
+            )
+        }
         Text(
-            text = "Delivered on or before Thursday, 23 April 2020",
-            fontSize = 12.sp,
-            color = Color(0xFF007AFF),
-            modifier = Modifier.padding(16.dp)
+            text = stringResource(id = R.string.standard),
+            color = Color.Black,
+            lineHeight = 1.25.em,
+            style = TextStyle(
+                fontSize = 16.sp,
+                letterSpacing = (-0.16).sp
+            ),
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 50.dp, y = 12.dp)
+                .fillMaxWidth()
+        )
+        Text(
+            text = stringResource(id = R.string.free),
+            color = Color.Black,
+            textAlign = TextAlign.End,
+            lineHeight = 1.25.em,
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.16).sp
+            ),
+            modifier = Modifier
+                .align(alignment = Alignment.TopEnd)
+                .offset(x = 0.dp, y = 12.dp)
+                .fillMaxWidth()
+        )
+        
+        // Express shipping option
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 0.dp, y = 30.dp)
+                .fillMaxWidth()
+                .requiredHeight(height = 40.dp)
+                .clip(shape = RoundedCornerShape(10.dp))
+                .background(color = Color(0xfff9f9f9))
+        )
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.Center)
+                .offset(x = (-12.5).dp, y = 30.dp)
+                .requiredWidth(width = 72.dp)
+                .requiredHeight(height = 26.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(shape = MaterialTheme.shapes.small)
+                    .background(color = Color(0xfff5f8ff))
+            )
+            Text(
+                text = stringResource(id = R.string.days_1_2),
+                color = Color(0xff004cff),
+                textAlign = TextAlign.Center,
+                lineHeight = 1.31.em,
+                style = TextStyle(
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
+                    letterSpacing = (-0.13).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.Center)
+                    .fillMaxWidth()
+            )
+        }
+        Text(
+            text = stringResource(id = R.string.express),
+            color = Color.Black,
+            lineHeight = 1.25.em,
+            style = TextStyle(
+                fontSize = 16.sp,
+                letterSpacing = (-0.16).sp
+            ),
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 50.dp, y = 42.dp)
+                .fillMaxWidth()
+        )
+        Text(
+            text = "$12,00",
+            color = Color.Black,
+            textAlign = TextAlign.End,
+            lineHeight = 1.25.em,
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.16).sp
+            ),
+            modifier = Modifier
+                .align(alignment = Alignment.TopEnd)
+                .offset(x = 0.dp, y = 42.dp)
+                .fillMaxWidth()
+        )
+        
+        // Delivery info
+        Text(
+            text = stringResource(id = R.string.delivered_on),
+            color = Color.Black,
+            lineHeight = 1.33.em,
+            style = TextStyle(fontSize = 12.sp),
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 0.dp, y = 66.dp)
+                .fillMaxWidth()
+                .requiredHeight(height = 20.dp)
         )
     }
 }
 
 @Composable
 fun PaymentMethodSection(
-    methods: List<PaymentMethod>,
-    selectedMethod: String,
-    onMethodSelect: (String) -> Unit,
-    onEditClick: () -> Unit
+    modifier: Modifier = Modifier,
+    onEditClick: () -> Unit = {}
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Payment Method",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
-                
-                IconButton(
-                    onClick = onEditClick,
-                    modifier = Modifier.size(24.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Payment",
-                        tint = Color(0xFF007AFF),
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
-            
-            Spacer(modifier = Modifier.height(12.dp))
-            
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                methods.forEach { method ->
-                    PaymentMethodButton(
-                        method = method,
-                        isSelected = selectedMethod == method.id,
-                        onClick = { onMethodSelect(method.id) }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun PaymentMethodButton(
-    method: PaymentMethod,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (isSelected) Color(0xFF007AFF) else Color(0xFFE5E5EA)
-        ),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Text(
-            text = method.name,
-            color = if (isSelected) Color.White else Color.Black,
-            fontWeight = FontWeight.Medium
-        )
-    }
-}
-
-@Composable
-fun PaymentBottomSection(
-    totalAmount: Double,
-    onPayClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
+    Box(
         modifier = modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(20.dp)
     ) {
-        // Total
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Total",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.Black
-            )
-            
-            Text(
-                text = "$${String.format("%.2f", totalAmount).replace(".", ",")}",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-        }
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        // Pay button
-        Button(
-            onClick = onPayClick,
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Black
-            ),
-            shape = RoundedCornerShape(28.dp)
+                .align(alignment = Alignment.CenterEnd)
+                .offset(x = 0.dp, y = (-22).dp)
+                .requiredSize(size = 30.dp)
         ) {
+            EditButton(
+                onEditClick = onEditClick,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+        Text(
+            text = stringResource(id = R.string.payment_method),
+            color = Color(0xff202020),
+            lineHeight = 1.43.em,
+            style = TextStyle(
+                fontSize = 21.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.21).sp
+            ),
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 0.dp, y = (-19).dp)
+                .fillMaxWidth()
+        )
+        
+        // COD button
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .offset(x = 0.dp, y = 22.dp)
+                .requiredWidth(width = 73.dp)
+                .requiredHeight(height = 30.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(shape = RoundedCornerShape(18.dp))
+                    .background(color = Color(0xffe5ebfc))
+            )
             Text(
-                text = "Pay",
-                color = Color.White,
-                fontWeight = FontWeight.Medium,
-                fontSize = 16.sp
+                text = stringResource(id = R.string.cod),
+                color = Color(0xff004cff),
+                textAlign = TextAlign.Center,
+                lineHeight = 1.27.em,
+                style = TextStyle(
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.15).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.Center)
+                    .fillMaxWidth()
             )
         }
         
-        // Bottom spacing for navigation
-        Spacer(modifier = Modifier.height(80.dp))
+        // Card info
+        Box(
+            modifier = Modifier
+                .align(alignment = Alignment.Center)
+                .offset(x = (-0.5).dp, y = 15.dp)
+                .requiredWidth(width = 156.dp)
+                .requiredHeight(height = 2.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.card_number),
+                color = Color(0xff202020),
+                lineHeight = 1.29.em,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.14).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterStart)
+                    .offset(x = 0.dp, y = 8.dp)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = stringResource(id = R.string.card_masked),
+                color = Color(0xff202020),
+                lineHeight = 1.33.em,
+                style = TextStyle(
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.12).sp
+                ),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterStart)
+                    .offset(x = 0.dp, y = 9.dp)
+                    .fillMaxWidth()
+            )
+        }
     }
 }
 
-@Preview(showBackground = true)
+
+@Preview(widthDp = 375, heightDp = 876)
 @Composable
-fun PaymentScreenPreview() {
-    MaterialTheme {
-        PaymentScreen(
-            onNavigate = {},
-            onPayClick = {},
-            onEditAddressClick = {},
-            onEditContactClick = {},
-            onEditPaymentClick = {}
-        )
-    }
+private fun PaymentPreview() {
+    Payment(Modifier)
 }

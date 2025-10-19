@@ -51,6 +51,10 @@
     <string name="remove">Remove</string>
     <string name="cart_empty">Your cart is empty</string>
     <string name="shopping_bag_icon">S</string>
+    <string name="cart_empty_title">Cart</string>
+    <string name="cart_count_zero">0</string>
+    <string name="total_zero">$0,00</string>
+    <string name="empty_cart_message">Your cart is empty. Start shopping to add items!</string>
     <!-- Payment -->
     <string name="payment">Payment</string>
     <string name="contact_information">Contact Information</string>
@@ -65,6 +69,11 @@
     <string name="card">Card</string>
     <string name="cod">COD</string>
     <string name="pay">Pay</string>
+    <string name="add_voucher">Add Voucher</string>
+    <string name="days_5_7">5-7 days</string>
+    <string name="days_1_2">1-2 days</string>
+    <string name="card_number">1579</string>
+    <string name="card_masked">✱✱✱✱   ✱✱✱✱   ✱✱✱✱</string>
     <!-- Settings -->
     <string name="settings">Settings</string>
     <string name="personal">Personal</string>
